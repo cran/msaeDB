@@ -1,12 +1,12 @@
-c3bb37fcb846210970bb3a9e6dd2cd23 *DESCRIPTION
+4fbdacec1fc7bf21e94cda09aae622a9 *DESCRIPTION
 79e17973f1bc24f16042743e33dbf3f3 *NAMESPACE
 37bd3c6c38d4dc2ccd5b84c8d34d9b9c *R/datamsaeDB.R
-0fddf5af2943cbaee76cbcdbf4773e2f *R/msaeDB-Package.R
+be8e564caa29c508552732265d96bfae *R/msaeDB-Package.R
 e5045f6c39dd0a8f43d381f45554f451 *R/msaedb.R
 aec8ee0b92097acecb987d70552e2d21 *R/msaefh.R
 e30a0dd8875e016b643b29f43c22dd0c *R/saedb.R
 e6bbb96ac18d8e33af736bffd3522ac5 *R/saefh.R
-33c7964981f87fa546fbd6e0597588da *README.md
+795447984cf44b152fb7cf5581f9e2e1 *README.md
 d83133e29e4574dbed9d09ddb9c03631 *build/vignette.rds
 c7eff2e4fd7073133aaf400bc0de55bb *data/datamsaeDB.rda
 263349c01f8b7336cd5a64cd3ae1ceb1 *inst/doc/Zaza_vignette.R

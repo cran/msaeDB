@@ -13,20 +13,20 @@ status](https://ci.appveyor.com/api/projects/status/github/zazaperwira/msaeDB?br
 coverage](https://codecov.io/gh/zazaperwira/msaeDB/branch/master/graph/badge.svg)](https://codecov.io/gh/zazaperwira/msaeDB?branch=master)
 <!-- badges: end -->
 
-This Package is implementing Benchmarking Method for Multivariate Small
-Area Estimation under Fay Herriot Model. Multivariate Small Area
-Estimation (MSAE) is a development of Univariate Small Area Estimation
-that considering the correlation among response variables and borrowing
-the strength from auxiliary variables effectiveness of a domain sample
-size, the multivariate model in this package is based on Multivariate
-model 1 proposed by Roberto Benavent and Domigo Morales (2015) \<DOI:
-10.1016/j.csda.2015.07.013.\>. Benchmarking in Small Area Estimation is
-a modification of Small Area Estimation model to guarantees that the
-aggregate weighted mean of the county predictors equals the
-corresponding weighted mean of survey estimates. Difference Benchmarking
-is the simplest benchmarking method but widely used by multiplying EBLUP
-estimator by the common adjustment factors (J.N.K Rao and Isabela
-Molina, 2013).
+Implements Benchmarking Method for Multivariate Small Area Estimation
+under Fay Herriot Model. Multivariate Small Area Estimation (MSAE) is a
+development of Univariate Small Area Estimation that considering the
+correlation among response variables and borrowing the strength from
+related areas and auxiliary variables to increase the effectiveness of
+sample size, the multivariate model in this package is based on
+multivariate model 1 proposed by Roberto Benavent and Domingo Morales
+(2015). Benchmarking in Small Area Estimation is a modification of Small
+Area Estimation model to guarantee that the aggregate weighted mean of
+the county predictors equals the corresponding weighted mean of survey
+estimates. Difference Benchmarking is the simplest benchmarking method
+but widely used by multiplying empirical best linear unbiased prediction
+(EBLUP) estimator by the common adjustment factors (J.N.K Rao and Isabel
+Molina, 2015).
 
 ## Authors
 
@@ -38,16 +38,16 @@ Zaza Yuda Perwira <221710086@stis.ac.id>
 
 ## Functions
 
-  - `msaedb()` Produces EBLUPs, MSE, and Aggregarion of Multivariat SAE
+  - `msaedb()` Produces EBLUPs, MSE, and Aggregation of Multivariate SAE
     with Difference Benchmarking
-  - `saedb()` Produces EBLUPs, MSE, and Aggregarion of Univariate SAE
+  - `saedb()` Produces EBLUPs, MSE, and Aggregation of Univariate SAE
     with Difference Benchmarking
-  - `msaefh()` Produces EBLUPs and MSE of Multivariat SAE
+  - `msaefh()` Produces EBLUPs and MSE of Multivariate SAE
   - `saefh()` Produces EBLUPs and MSE of Univariate SAE
 
 ## References
 
-  - Benavent, Roberto & Morales, Domigo. (2016). Multivariate
+  - Benavent, Roberto & Morales, Domingo. (2015). Multivariate
     Fay-Herriot models for small area estimation. Computational
     Statistics and Data Analysis 94 2016 372-390. DOI:
     10.1016/j.csda.2015.07.013.
