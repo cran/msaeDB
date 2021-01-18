@@ -255,9 +255,9 @@ saedb <- function (formula, vardir, weight, samevar = FALSE, MAXITER = 100, PREC
 
     g4.b   <- matrix(0,r,r)
     for (k in 0:(r-1)) {
-      for (i in (k*30+1):((k+1)*n)) {
+      for (i in ((k*n)+1):((k+1)*n)) {
         xdi<- matrix(x.matrix[i, ], nrow = 1, ncol = p)
-        for (j in (k*30+1):((k+1)*n)) {
+        for (j in ((k*n)+1):((k+1)*n)) {
           xdj <- matrix(x.matrix[j, ], nrow = 1, ncol = p)
           g4.b<- g4.b + d.sigma[[k+1]]*as.numeric(W[i,i]*W[j,j]*Bi[i,i]*Bi[j,j]*as.numeric(xdi %*% Q %*% t(xdj)))
         }
@@ -369,9 +369,9 @@ saedb <- function (formula, vardir, weight, samevar = FALSE, MAXITER = 100, PREC
     g4.a  <- diag(g4.a)
     g4.b  <- matrix(0,r,r)
     for (k in 0:(r-1)) {
-      for (i in (k*30+1):((k+1)*n)) {
+      for (i in ((k*n)+1):((k+1)*n)) {
         xdi <- matrix(x.matrix[i, ], nrow = 1, ncol = p)
-        for (j in (k*30+1):((k+1)*n)) {
+        for (j in ((k*n)+1):((k+1)*n)) {
           xdj <- matrix(x.matrix[j, ], nrow = 1, ncol = p)
           g4.b<- g4.b + d.sigma[[k+1]]*as.numeric(W[i,i]*W[j,j]*Bi[i,i]*Bi[j,j]*as.numeric(xdi %*% Q %*% t(xdj)))
         }
