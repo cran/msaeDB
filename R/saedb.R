@@ -72,7 +72,7 @@
 saedb <- function (formula, vardir, weight, samevar = FALSE, MAXITER = 100, PRECISION = 1e-04,
                     data) {
 
-  result = list(SAE_Eblup = NA, MSE_Eblup = NA,
+  result = list(SAE_Eblup = NA, MSE_Eblup = NA,randomEffect = NA, Rmatrix = NA,
                 fit = list(method = NA, convergence = NA, iterations = NA,
                            estcoef = NA, refvar = NA, informationFisher = NA),
                 difference_benchmarking = list(Estimation = NA,
@@ -163,7 +163,7 @@ saedb <- function (formula, vardir, weight, samevar = FALSE, MAXITER = 100, PREC
     n = length(y.vec)/r
 
     if ((dim(vardir)[2] != sum(1:r)) && (dim(vardir)[1] != n)) {
-      stop("Object vardir is not appropiate with data, it must be ",n," x ",r," matrix")
+      stop("Object vardir is not appropiate with data, it must be ",n," x ",sum(1:r)," matrix")
     }
     if (any(is.na(vardir)))
       stop("Object vardir contains NA values.")
@@ -253,13 +253,13 @@ saedb <- function (formula, vardir, weight, samevar = FALSE, MAXITER = 100, PREC
     }
     g4.a   <- diag(g4.a)
 
-    g4.b   <- matrix(0,r,r)
-    for (k in 0:(r-1)) {
-      for (i in ((k*n)+1):((k+1)*n)) {
-        xdi<- matrix(x.matrix[i, ], nrow = 1, ncol = p)
-        for (j in ((k*n)+1):((k+1)*n)) {
+    g4.b  <- matrix(0,r,r)
+    for (l in 0:(r-1)) {
+      for (i in ((l*n)+1):((l+1)*n)) {
+        xdi <- matrix(x.matrix[i, ], nrow = 1, ncol = p)
+        for (j in ((l*n)+1):((l+1)*n)) {
           xdj <- matrix(x.matrix[j, ], nrow = 1, ncol = p)
-          g4.b<- g4.b + d.sigma[[k+1]]*as.numeric(W[i,i]*W[j,j]*Bi[i,i]*Bi[j,j]*as.numeric(xdi %*% Q %*% t(xdj)))
+          g4.b<- g4.b + d.sigma[[l+1]]*as.numeric(W[i,i]*W[j,j]*Bi[i,i]*Bi[j,j]*as.numeric(xdi %*% Q %*% t(xdj)))
         }
       }
     }
@@ -368,12 +368,12 @@ saedb <- function (formula, vardir, weight, samevar = FALSE, MAXITER = 100, PREC
     }
     g4.a  <- diag(g4.a)
     g4.b  <- matrix(0,r,r)
-    for (k in 0:(r-1)) {
-      for (i in ((k*n)+1):((k+1)*n)) {
+    for (l in 0:(r-1)) {
+      for (i in ((l*n)+1):((l+1)*n)) {
         xdi <- matrix(x.matrix[i, ], nrow = 1, ncol = p)
-        for (j in ((k*n)+1):((k+1)*n)) {
+        for (j in ((l*n)+1):((l+1)*n)) {
           xdj <- matrix(x.matrix[j, ], nrow = 1, ncol = p)
-          g4.b<- g4.b + d.sigma[[k+1]]*as.numeric(W[i,i]*W[j,j]*Bi[i,i]*Bi[j,j]*as.numeric(xdi %*% Q %*% t(xdj)))
+          g4.b<- g4.b + d.sigma[[l+1]]*as.numeric(W[i,i]*W[j,j]*Bi[i,i]*Bi[j,j]*as.numeric(xdi %*% Q %*% t(xdj)))
         }
       }
     }
@@ -396,6 +396,10 @@ saedb <- function (formula, vardir, weight, samevar = FALSE, MAXITER = 100, PREC
     names(MSE_DB)    = varnames_Y
   }
 
+  randomEffect <- GIn%*%SIGMA_inv%*%resid
+  randomEffect <- as.data.frame(matrix(randomEffect, n, r))
+  names(randomEffect) <- varnames_Y
+
   y.direct  <- matrix(y.vec, n,r)
   colnames(y.direct) = varnames_Y
   W <- as.matrix(w.matrix)
@@ -416,8 +420,10 @@ saedb <- function (formula, vardir, weight, samevar = FALSE, MAXITER = 100, PREC
   colnames(Aggregation) <- varnames_Y
 
 
-  result$SAE_Eblup = signif(SAE_Eblup, digits = 5)
-  result$MSE_Eblup = signif(MSE_Eblup, digits = 5)
+  result$SAE_Eblup = SAE_Eblup
+  result$MSE_Eblup = MSE_Eblup
+  result$randomEffect = signif(randomEffect, digits = 5)
+  result$Rmatrix = signif(RIn, digits = 5)
   result$fit$method = "REML"
   result$fit$convergence = convergence
   result$fit$iterations = k
