@@ -11,6 +11,8 @@
 #' @return This function returns a list of the following objects:
 #'    \item{SAE_Eblup}{A dataframe with the values of the EBLUPs estimators}
 #'    \item{MSE_Eblup}{A dataframe with the values of estimated mean square errors of EBLUPs estimators}
+#'    \item{randomEffect}{A dataframe with the values of the random effect estimators}
+#'    \item{Rmatrix}{A block diagonal matrix composed of sampling errors}
 #'    \item{fit}{A list containing the following objects:}
 #'      \itemize{
 #'        \item method : The fitting method (this function is using "REML")
