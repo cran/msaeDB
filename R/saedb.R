@@ -53,6 +53,9 @@
 #' weight = c("w1","w2","w3")
 #' saeDB <- saedb(formula, vardir, weight, data=datamsaeDB)
 #'
+#' #to calculate only one response variable
+#' saeDB1 <- saedb(formula=list(f1=Y1~X1+X2),vardir ="v1", weight="w1",data=datamsaeDB )
+#'
 #' ##Do not use parameter 'data'
 #' formula = list(f1 = datamsaeDB$Y1~datamsaeDB$X1+datamsaeDB$X2,
 #'                f2 = datamsaeDB$Y2~datamsaeDB$X2,
@@ -63,11 +66,16 @@
 #' weight = datamsaeDB[,c("w1","w2","w3")]
 #' saeDB_d <- saedb(formula, vardir, weight = weight)
 #'
+#'
 #' saeDB$SAE_Eblup        #to see EBLUP Estimators
 #' saeDB$MSE_Eblup        #to see estimated MSE of EBLUP estimators
 #' saeDB$difference_benchmarking$Estimation   #to see Benchmarked EBLUP Estimators
 #' saeDB$difference_benchmarking$MSE_DB       #to see estimated MSE of Benchmarked EBLUP Estimators
 #' saeDB$difference_benchmarking$Aggregation  #to see the aggregation of, benchmarking
+#'
+#'
+#'
+#'
 #'
 #' @export saedb
 #'

@@ -70,8 +70,11 @@ This function returns a list of the following objects:
 This function produces EBLUPs, MSE, and aggregation of Univariate SAE with Difference Benchmarking for non-sampled area
 }
 \examples{
+
 ##load dataset
 data(datamsaeDBns)
+#Note : Make sure yout dataset does not contain NA Values
+#       you can set 0 in Direct estinations and vardir for non-sampled areas.
 
 #Compute Fitted model for Y1, Y2, and Y3
 #Y1 ~ X1 + X2
@@ -87,5 +90,9 @@ weight = c("w1","w2","w3")
 cluster = c("clY1","clY2","clY3")
 nonsample = "nonsample"
 saeDBns <- saedbns(formula,vardir, weight,cluster, nonsample, data=datamsaeDBns)
+
+#to calculate only one response variable
+saeDB1 <- saedbns(formula=list(f1=Y1~X1+X2),vardir ="v1", weight="w1",
+         cluster = "clY1",nonsample = "nonsample",data=datamsaeDBns )
 
 }

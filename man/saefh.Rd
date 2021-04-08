@@ -58,6 +58,9 @@ vardir = c("v1","v12","v13","v2","v23","v3")
 
 saeFH <- saefh(formula, vardir, data=datamsaeDB)
 
+#to calculate only one response variable
+saeFH1 <- saefh(formula=list(f1=Y1~X1+X2),vardir ="v1",data=datamsaeDB )
+
 ##Do not use parameter 'data'
 formula = list(f1 = datamsaeDB$Y1~datamsaeDB$X1+datamsaeDB$X2,
                f2 = datamsaeDB$Y2~datamsaeDB$X2,

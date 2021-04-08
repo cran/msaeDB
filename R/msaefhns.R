@@ -30,6 +30,8 @@
 #' @examples
 #' ##load dataset
 #' data(datamsaeDBns)
+#' #Note : Make sure yout dataset does not contain NA Values
+#' #       you can set 0 in Direct estinations and vardir for non-sampled areas.
 #'
 #' #Compute Fitted model for Y1, Y2, and Y3
 #' #Y1 ~ X1 + X2

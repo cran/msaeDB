@@ -41,8 +41,11 @@
 #'      }
 #'
 #' @examples
+#'
 #' ##load dataset
 #' data(datamsaeDBns)
+#' #Note : Make sure yout dataset does not contain NA Values
+#' #       you can set 0 in Direct estinations and vardir for non-sampled areas.
 #'
 #' #Compute Fitted model for Y1, Y2, and Y3
 #' #Y1 ~ X1 + X2
@@ -58,6 +61,10 @@
 #' cluster = c("clY1","clY2","clY3")
 #' nonsample = "nonsample"
 #' saeDBns <- saedbns(formula,vardir, weight,cluster, nonsample, data=datamsaeDBns)
+#'
+#' #to calculate only one response variable
+#' saeDB1 <- saedbns(formula=list(f1=Y1~X1+X2),vardir ="v1", weight="w1",
+#'          cluster = "clY1",nonsample = "nonsample",data=datamsaeDBns )
 #'
 #' @export saedbns
 #'
@@ -436,16 +443,19 @@ saedbns <- function (formula, vardir, weight,cluster,nonsample, samevar = FALSE,
   }
 
   ######### Aggregation Sampled area #########
-  y.vec  <- matrix(y.vec, n,r)
-  colnames(y.vec) = varnames_Y
+  y.direct  <- matrix(y.vec, n,r)
+  colnames(y.direct) = varnames_Y
   W <- as.matrix(w.matrix)
 
-  alfa <- ginv(t(W))%*%(t(W)%*%y.vec-t(W)%*%as.matrix(SAE_Eblup))
+  SAE_DB <- matrix(NA,n,r)
+  for (i in 1:r) {
+    SAE_DB[,i] <- SAE_Eblup[,i] + (sum(y.direct[,i]*W[,i])-sum(SAE_Eblup[,i]*W[,i]))
+  }
 
-  SAE_DB <- as.data.frame(SAE_Eblup + alfa)
+  SAE_DB <- as.data.frame(SAE_DB)
   colnames(SAE_DB) <- varnames_Y
 
-  Aggregation_Direct <- colSums(as.matrix(y.vec)*(W))
+  Aggregation_Direct <- colSums(as.matrix(y.direct)*(W))
   Aggregation_DB     <- colSums(as.matrix(SAE_DB)*(W))
   Aggregation_EBLUP  <- colSums(as.matrix(SAE_Eblup)*(W))
 
@@ -454,27 +464,27 @@ saedbns <- function (formula, vardir, weight,cluster,nonsample, samevar = FALSE,
   colnames(Aggregation) <- varnames_Y
 
   #Benchmarking All sample
-  formuladata_all <- formula
-  for(i in 1:r) {formuladata_all[[i]] <- model.frame(formula[[i]], na.action = na.omit, data )}
-
-  y.vec_all <- unlist(lapply(formuladata_all, function(x){x[1][1]}))
-  y.vecns <- y.vec_all
-  #Make sure y of non sample is equal to 0
-  for (i in 1:r ){
-    for (j in 1:(length(anns))){
-      y.vecns[anns[j]+((i-1)*n)]<-0
-    }
-  }
-  y.direct_all  <- matrix(y.vecns, totalArea,r)
-  colnames(y.direct_all) = varnames_Y
+  y.direct  <- matrix(y.vec, n,r)
+  colnames(y.direct) = varnames_Y
+  W <- as.matrix(w.matrix)
   W_all = as.matrix(data[,weight])
 
-  alfa_all <- ginv(t(W_all))%*%(t(W_all)%*%y.direct_all-t(W_all)%*%as.matrix(SAE_Eblup_all))
+  formuladata_all <- formula
+  for(i in 1:r) {formuladata_all[[i]] <- model.frame(formula[[i]], na.action = na.omit, data )}
+  y.vec_all <- unlist(lapply(formuladata_all, function(x){x[1][1]}))
+  n.all <- length(y.vec_all)/r
 
-  SAE_DB_all <- as.data.frame(SAE_Eblup_all + alfa_all)
+  SAE_DB_all <- matrix(NA, n.all, r)
+  SAE_Eblup_all <- as.data.frame(SAE_Eblup_all)
+  for (i in 1:r) {
+    SAE_DB_all[,i] <- SAE_Eblup_all[,i] + (sum(y.direct[,i]*W[,i])-sum(SAE_Eblup_all[,i]*W_all[,i]))
+  }
+
+  colnames(SAE_DB_all) <- varnames_Y
+  SAE_DB_all <- as.data.frame(SAE_DB_all)
   colnames(SAE_DB_all) <- varnames_Y
 
-  Aggregation_Direct <- colSums(as.matrix(y.direct_all)*(W_all))
+  Aggregation_Direct <- colSums(as.matrix(y.direct)*(W))
   Aggregation_DB     <- colSums(as.matrix(SAE_DB_all)*(W_all))
   Aggregation_EBLUP  <- colSums(as.matrix(SAE_Eblup_all)*(W_all))
 

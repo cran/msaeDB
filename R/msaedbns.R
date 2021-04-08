@@ -43,6 +43,9 @@
 #' @examples
 #' ##load dataset
 #' data(datamsaeDBns)
+#' #Note : Make sure yout dataset does not contain NA Values
+#' #       you can set 0 in Direct estinations and vardir for non-sampled areas.
+#'
 #'
 #' #Compute Fitted model for Y1, Y2, and Y3
 #' #Y1 ~ X1 + X2
@@ -440,27 +443,17 @@ msaedbns <- function (formula, vardir, weight,cluster,nonsample, samevar = FALSE
   colnames(Aggregation) <- varnames_Y
 
   #Benchmarking All sample
-  formuladata_all <- formula
-  for(i in 1:r) {formuladata_all[[i]] <- model.frame(formula[[i]], na.action = na.omit, data )}
-
-  y.vec_all <- unlist(lapply(formuladata_all, function(x){x[1][1]}))
-  y.vecns <- y.vec_all
-  #Make sure y of non sample is equal to 0
-  for (i in 1:r ){
-    for (j in 1:(length(anns))){
-      y.vecns[anns[j]+((i-1)*n)]<-0
-    }
-  }
-  y.direct_all  <- matrix(y.vecns, totalArea,r)
-  colnames(y.direct_all) = varnames_Y
+  y.direct <- y.vec
+  colnames(y.direct) = varnames_Y
+  W_direct = as.matrix(w.matrix)
   W_all = as.matrix(data[,weight])
 
-  alfa_all <- ginv(t(W_all))%*%(t(W_all)%*%y.direct_all-t(W_all)%*%as.matrix(MSAE_Eblup_all))
+  alfa_all <- ginv(t(W_all))%*%(t(W_direct)%*%y.direct-t(W_all)%*%as.matrix(MSAE_Eblup_all))
 
   MSAE_DB_all <- as.data.frame(MSAE_Eblup_all + alfa_all)
   colnames(MSAE_DB_all) <- varnames_Y
 
-  Aggregation_Direct <- colSums(as.matrix(y.direct_all)*(W_all))
+  Aggregation_Direct <- colSums(as.matrix(y.direct)*(W_direct))
   Aggregation_DB     <- colSums(as.matrix(MSAE_DB_all)*(W_all))
   Aggregation_EBLUP  <- colSums(as.matrix(MSAE_Eblup_all)*(W_all))
 
